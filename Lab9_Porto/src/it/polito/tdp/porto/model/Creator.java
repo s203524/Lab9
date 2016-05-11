@@ -64,6 +64,8 @@ public class Creator {
 		return true;
 	}
 	
-	
+	public String toString(){
+		return this.familyName + " " + this.givenName;
+	}
 	
 }

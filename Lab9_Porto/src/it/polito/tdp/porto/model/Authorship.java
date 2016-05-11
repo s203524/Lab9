@@ -3,10 +3,10 @@ package it.polito.tdp.porto.model;
 public class Authorship {
 	
 	private int idAuthorship;
-	private int eprintId;
+	private long eprintId;
 	private int idCreator;
 	
-	public Authorship(int idAuthorship, int eprintId, int idCreator) {
+	public Authorship(int idAuthorship, long eprintId, int idCreator) {
 		super();
 		this.idAuthorship = idAuthorship;
 		this.eprintId = eprintId;
@@ -21,7 +21,7 @@ public class Authorship {
 		this.idAuthorship = idAuthorship;
 	}
 
-	public int getEprintId() {
+	public long getEprintId() {
 		return eprintId;
 	}
 

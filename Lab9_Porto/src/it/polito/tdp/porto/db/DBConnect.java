@@ -4,37 +4,31 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
 public class DBConnect {
 
-	static private final String jdbcUrl = "jdbc:mysql://localhost/porto?user=root&password=root";
-	static private DBConnect instance = null;
-
-	private DBConnect() {
-
-		instance = this;
-	}
-
-	public static DBConnect getInstance() {
-
-		if (instance == null)
-			return new DBConnect();
-
-		else {
-			return instance;
-		}
-	}
-
-	public Connection getConnection() {
-
+private static final String jdbcURL = "jdbc:mysql://localhost/porto?user=root" ;
+	
+	private static ComboPooledDataSource dataSource = null ;
+	
+	public static Connection getConnection() {
+		
+		Connection conn;
 		try {
-
-			Connection conn = DriverManager.getConnection(jdbcUrl);
-			return conn;
-
-		} catch (SQLException e) {
 			
+			if(dataSource==null) {
+				// creare ed attivare il Connection Pool
+				dataSource = new ComboPooledDataSource() ;
+				dataSource.setJdbcUrl(jdbcURL);
+			}
+			
+			return dataSource.getConnection();
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new RuntimeException("Cannot get connection " + jdbcUrl);
+			throw new RuntimeException("Errore nella connessione", e) ;
 		}
 	}
+
 }

@@ -2,6 +2,9 @@ package it.polito.tdp.porto.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.porto.model.Creator;
+import it.polito.tdp.porto.model.PortoModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +12,19 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 
 public class PortoController {
+	
+	private PortoModel model;
+	
+	
+	
+	
+	
+	public void setModel(PortoModel model){
+		this.model = model;	
+		cmbAutore1.getItems().addAll(model.popolaTendina());
+		cmbAutore2.getItems().addAll(model.popolaTendina());
+	}
+		
 
     @FXML
     private ResourceBundle resources;
@@ -17,10 +33,10 @@ public class PortoController {
     private URL location;
 
     @FXML
-    private ComboBox<?> cmbAutore1;
+    private ComboBox<Creator> cmbAutore1;
 
     @FXML
-    private ComboBox<?> cmbAutore2;
+    private ComboBox<Creator> cmbAutore2;
 
     @FXML
     private Button btnCoautori;

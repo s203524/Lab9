@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Article {
 
-	private int eprintId;
+	private long eprintId;
 	private int year;
 	private String title;
 	private List<Creator> creators;
 	
-	public Article(int eprintId, int year, String title) {
+	public Article(long eprintId, int year, String title) {
 		super();
 		this.eprintId = eprintId;
 		this.year = year;
@@ -18,7 +18,7 @@ public class Article {
 		creators = new LinkedList<Creator>();
 	}
 
-	public int getEprintId() {
+	public long getEprintId() {
 		return eprintId;
 	}
 
@@ -46,7 +46,7 @@ public class Article {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + eprintId;
+		result = prime * result + (int) (eprintId ^ (eprintId >>> 32));
 		return result;
 	}
 
@@ -63,6 +63,7 @@ public class Article {
 			return false;
 		return true;
 	}
+
 	
 	
 	
