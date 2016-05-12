@@ -42,6 +42,18 @@ public class Article {
 		this.title = title;
 	}
 
+	public List<Creator> getCreators() {
+		return creators;
+	}
+
+	public void setCreators(List<Creator> creators) {
+		this.creators = creators;
+	}
+
+	public void setEprintId(long eprintId) {
+		this.eprintId = eprintId;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

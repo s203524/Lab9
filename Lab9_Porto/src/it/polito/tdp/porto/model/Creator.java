@@ -3,7 +3,7 @@ package it.polito.tdp.porto.model;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Creator {
+public class Creator implements Comparable<Creator>{
 
 	private int idCreator;
 	private String familyName;
@@ -66,6 +66,14 @@ public class Creator {
 	
 	public String toString(){
 		return this.familyName + " " + this.givenName;
+	}
+
+	@Override
+	public int compareTo(Creator uno) {
+		int result = this.familyName.compareTo(uno.familyName);
+		if(result==0)
+			return this.givenName.compareTo(uno.givenName);
+		return result;
 	}
 	
 }

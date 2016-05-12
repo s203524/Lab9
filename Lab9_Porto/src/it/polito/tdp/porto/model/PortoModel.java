@@ -1,5 +1,6 @@
 package it.polito.tdp.porto.model;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class PortoModel {
 	
 	private List<Article> articles;
 	
-	private List<Authorship> autorships;
+	private List<Authorship> authorships;
 	
 	private PortoDAO PDAO;
 
@@ -24,25 +25,68 @@ public class PortoModel {
 		super();
 		this.creators = new LinkedList<Creator>();
 		this.articles = new LinkedList<Article>();
-		this.autorships = new LinkedList<Authorship>();
+		this.authorships = new LinkedList<Authorship>();
 		PDAO = new PortoDAO();
 	}
 
 	public List<Creator> popolaTendina(){
 		creators = PDAO.getAllCreators();
-		this.GenerateGraph();
-		System.out.println(grafo.vertexSet().size());
+		Collections.sort(creators);
 		return creators;
 	}
 	
 	public void GenerateGraph(){
-		
+		articles = PDAO.getAllArticles();
+		authorships = PDAO.getAllAuthorship();
 		for(Creator c: creators){
-			
 			grafo.addVertex(c);
 		}
-		
+		System.out.println("Numero Vertici:" + grafo.vertexSet().size());
+		//carico la lista di creatori per ciascun articolo
+		/*for(Article a: articles){
+			a.setCreators(PDAO.getContributorsOfAnArticle(a.getEprintId()));
+		}
+		*/
+		for(Article a: articles){
+			a.setCreators(this.authorsForAnArticle(a.getEprintId()));
+		}
+		this.aggiungiArchi();
+		System.out.println("Numero Archi:" + grafo.edgeSet().size());
 		
 	}
+		
+	public List<Creator> authorsForAnArticle(long l){
+		List<Integer> idCreator = new LinkedList<Integer>();
+		List<Creator> creatorsOfArticle = new LinkedList<Creator>();
+		for(Authorship as: authorships){
+			if(as.getEprintId()==l){
+				idCreator.add(as.getIdCreator());
+			}
+		}
+		for(Integer i: idCreator){
+			for(Creator c: creators){
+				if(c.getIdCreator()==i){
+					creatorsOfArticle.add(c);
+				}
+			}
+		}
+		return creatorsOfArticle;
+	}
+		
+	public void aggiungiArchi(){
+		for(Article a: articles){
+			Creator c = a.getCreators().get(0);
+			for(int i=0; i<a.getCreators().size(); i++){
+				if(!c.equals(a.getCreators().get(i)))
+					grafo.addEdge(c, a.getCreators().get(i));
+			}
+		}
+	}
+	
+	public List<Creator> listaCoautori(Creator c){
+		return Graphs.neighborListOf(grafo, c);
+		
+	}
+	
 	
 }

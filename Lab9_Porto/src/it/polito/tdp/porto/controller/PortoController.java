@@ -15,14 +15,12 @@ public class PortoController {
 	
 	private PortoModel model;
 	
-	
-	
-	
-	
+
 	public void setModel(PortoModel model){
 		this.model = model;	
 		cmbAutore1.getItems().addAll(model.popolaTendina());
 		cmbAutore2.getItems().addAll(model.popolaTendina());
+		model.GenerateGraph();
 	}
 		
 
@@ -62,7 +60,24 @@ public class PortoController {
 
     @FXML
     void doCoautori(ActionEvent event) {
-
+    	String stampa = "";
+    	Creator c = cmbAutore1.getValue();
+    	if(c==null){
+    		Creator c1 = cmbAutore2.getValue();
+    		if(c1==null){
+    			txtOutput.setText("Selezionare almeno un autore dalla menù");
+    		}
+    		else{
+    			for(Creator tempC: model.listaCoautori(c1)){
+        			stampa += tempC.getFamilyName() + " " + tempC.getGivenName() + "\n";
+        		}
+    		}
+    	}
+    	else{
+    		for(Creator tempC: model.listaCoautori(c))
+    			stampa += tempC.getFamilyName() + " " + tempC.getGivenName() + "\n";
+    	}
+    	txtOutput.setText(stampa);
     }
 
     @FXML
