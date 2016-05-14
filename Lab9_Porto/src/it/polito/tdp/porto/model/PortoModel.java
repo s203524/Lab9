@@ -119,6 +119,23 @@ public class PortoModel {
 		return print;
 	}
 	
+	public StringBuilder getArticles(Creator c1, Creator c2){
+		StringBuilder print = new StringBuilder();
+		List<Article> articles1 = new LinkedList<Article>(PDAO.getArticlesFromAuthorX(c1.getIdCreator()));
+		List<Article> articles2 = new LinkedList<Article>(PDAO.getArticlesFromAuthorX(c2.getIdCreator()));
+		print.append("Articoli che collegano "+c1.toString()+"\n----------------------------");
+		
+		for(Article a: articles1){
+			if(!articles2.contains(a))
+				print.append("\n" + a.getTitle());
+		}
+		print.append("\n\nArticoli che collegano "+c2.toString()+"\n----------------------------");
+		for(Article a: articles2){
+			if(!articles1.contains(a))
+				print.append("\n" + a.getTitle());
+		}
+		return print;		
+	}
 	
 	
 }

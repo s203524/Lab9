@@ -50,7 +50,8 @@ public class PortoController {
 
     @FXML
     void doArticoli(ActionEvent event) {
-
+       	StringBuilder sb = model.getArticles(cmbAutore1.getValue(), cmbAutore2.getValue());
+    	txtOutput.setText(sb.toString());
     }
 
     @FXML

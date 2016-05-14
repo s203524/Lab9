@@ -40,7 +40,6 @@ public class PortoDAO {
 	
 	
 	
-	
 	public List<Article> getAllArticles(){
 		
 		List<Article> articles = new LinkedList<Article>();
@@ -122,5 +121,32 @@ public class PortoDAO {
 		
 	}
 	
+	
+	
+	public List<Article> getArticlesFromAuthorX(int x){
+		List<Article> articles = new LinkedList<Article>();
+		Connection conn = DBConnect.getConnection();
+		String sql = "SELECT * FROM article WHERE eprintid IN(SELECT eprintid FROM authorship WHERE id_creator=?)";
+		PreparedStatement st;
+		try {
+			st = conn.prepareStatement(sql);
+			st.setInt(1, x);
+			ResultSet res = st.executeQuery();
+			
+			while(res.next()){
+				Article tempA = new Article (res.getLong("eprintid"), res.getInt("year"), res.getString("title"));
+				articles.add(tempA);
+				
+			}
+			res.close();
+			return articles;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
 }
