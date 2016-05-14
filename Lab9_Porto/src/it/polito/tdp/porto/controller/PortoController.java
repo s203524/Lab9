@@ -55,7 +55,8 @@ public class PortoController {
 
     @FXML
     void doCluster(ActionEvent event) {
-
+    	StringBuilder sb = model.getCluster();
+    	txtOutput.setText(sb.toString());
     }
 
     @FXML

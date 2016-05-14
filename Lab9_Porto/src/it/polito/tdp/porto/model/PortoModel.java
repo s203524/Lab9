@@ -4,8 +4,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.Multigraph;
+import org.jgrapht.traverse.DepthFirstIterator;
+import org.jgrapht.traverse.GraphIterator;
 
 import it.polito.tdp.porto.db.PortoDAO;
 
@@ -84,9 +87,38 @@ public class PortoModel {
 	}
 	
 	public List<Creator> listaCoautori(Creator c){
-		return Graphs.neighborListOf(grafo, c);
+		List<Creator> duplicates = new LinkedList<Creator> (Graphs.neighborListOf(grafo, c));
+		List<Creator> coauthors = new LinkedList<Creator>();
+		for(Creator tempC: duplicates){
+			if(!coauthors.contains(tempC))
+				coauthors.add(tempC);
+		}
+		Collections.sort(coauthors);
+		return coauthors;
 		
 	}
+
+	public StringBuilder getCluster(){
+		StringBuilder print = new StringBuilder();
+		List<Creator> c = new LinkedList<Creator>();
+		int conta = 0;
+		
+		for(Creator tempC: grafo.vertexSet()){
+			if(!c.contains(tempC)){
+				print.append("Cluster partendo da: " + tempC.getFamilyName() + " " + tempC.getGivenName());
+				GraphIterator<Creator, ArcoArticle> dfv = new DepthFirstIterator<Creator, ArcoArticle>(grafo, tempC);
+				while(dfv.hasNext()){
+					Creator cr = dfv.next();
+					c.add(cr);
+					print.append("\n " + cr.toString());
+				}
+				conta++;
+				print.append("\n -------------->" + conta + "<--------------\n");
+			}	
+		}
+		return print;
+	}
+	
 	
 	
 }
